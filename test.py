@@ -19,6 +19,9 @@ def eval_tgt(encoder, classifier, data_loader):
     # set loss function
     criterion = nn.CrossEntropyLoss()
 
+    correct = 0
+    total = 0 
+
     # evaluate network
     for (images, labels) in data_loader:
         images = make_variable(images, volatile=True)
@@ -27,10 +30,14 @@ def eval_tgt(encoder, classifier, data_loader):
         preds = classifier(encoder(images))
         loss += criterion(preds, labels).item()
 
-        pred_cls = preds.data.max(1)[1]
-        acc += pred_cls.eq(labels.data).cpu().sum()
+        _, predicted = torch.max(preds.data,1)
+        total += labels.size(0)
+        correct += (predicted == labels).sum().item()
+        # pred_cls = preds.data.max(1)[1]
+        # acc += pred_cls.eq(labels.data).cpu().sum()
 
     loss /= len(data_loader)
-    acc /= len(data_loader.dataset)
+    # acc /= len(data_loader.dataset)
+    acc = correct/total
 
     print("Avg Loss = {}, Avg Accuracy = {:2%}".format(loss, acc))

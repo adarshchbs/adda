@@ -10,10 +10,10 @@ class Discriminator(nn.Module):
         self.layer = nn.Sequential(
             nn.Linear( in_features = input_dim, out_features = hidden_dim ),
             nn.ReLU(),
-            nn.Linear(in_features = hidden_dim, out_features = hidden_dim ),
-            nn.ReLU(),
+            # nn.Linear(in_features = hidden_dim, out_features = hidden_dim ),
+            # nn.ReLU(),
             nn.Linear(in_features = hidden_dim, out_features = output_dim ),
-            nn.LogSoftmax()
+            # nn.LogSoftmax()
         )
 
     def forward(self, inputs):
